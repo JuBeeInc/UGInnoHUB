@@ -38,3 +38,6 @@ tmp/
 temp/
 
 terra-sentry-2.0/
+
+# Telemetry Uploads
+uploads/
