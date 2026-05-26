@@ -555,7 +555,6 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
         <img
           ref={imgRef}
           src={streamUrl || undefined}
-          crossOrigin={streamUrl?.includes('action=stream') || streamUrl?.includes('192.168') ? undefined : "anonymous"}
           alt={`Live feed from ${sentinel.deviceId}`}
           className={`w-full h-full object-cover transition-opacity duration-300 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
