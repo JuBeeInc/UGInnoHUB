@@ -440,30 +440,53 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard 
-          title="Total Sentinels" 
-          value={sentinels.length} 
-          icon={<Radio className="h-5 w-5 text-primary" />}
-        />
-        <StatCard 
-          title="Active" 
-          value={activeSentinels} 
-          icon={<Activity className="h-5 w-5 text-primary" />}
-          variant="success"
-        />
-        <StatCard 
-          title="Inactive" 
-          value={inactiveSentinels} 
-          icon={<WifiOff className="h-5 w-5 text-muted-foreground" />}
-        />
-        <StatCard 
-          title="Alerts Today" 
-          value={alertStats.last24Hours} 
-          icon={<Bell className="h-5 w-5 text-warning" />}
-          variant={alertStats.last24Hours > 0 ? "warning" : "default"}
-        />
+      {/* Unified Stats Card */}
+      <div className="glass rounded-xl p-3 md:p-4 border border-border/50 shadow-sm">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-3 gap-x-2">
+          {/* Stat 1: Total Sentinels */}
+          <div className="flex items-center gap-2.5 p-1 px-2 md:px-3">
+            <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+              <Radio className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</p>
+              <p className="text-base md:text-lg font-bold tracking-tight">{sentinels.length}</p>
+            </div>
+          </div>
+
+          {/* Stat 2: Active */}
+          <div className="flex items-center gap-2.5 p-1 px-2 md:px-3 border-l border-border/30">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+              <Activity className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Active</p>
+              <p className="text-base md:text-lg font-bold tracking-tight text-emerald-400">{activeSentinels}</p>
+            </div>
+          </div>
+
+          {/* Stat 3: Inactive */}
+          <div className="flex items-center gap-2.5 p-1 px-2 md:px-3 border-t md:border-t-0 md:border-l border-border/30">
+            <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 text-muted-foreground">
+              <WifiOff className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Inactive</p>
+              <p className="text-base md:text-lg font-bold tracking-tight">{inactiveSentinels}</p>
+            </div>
+          </div>
+
+          {/* Stat 4: Alerts Today */}
+          <div className="flex items-center gap-2.5 p-1 px-2 md:px-3 border-t border-l md:border-t-0 border-border/30">
+            <div className="w-8 h-8 rounded-lg bg-warning/10 text-warning flex items-center justify-center flex-shrink-0">
+              <Bell className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[11px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Alerts Today</p>
+              <p className="text-base md:text-lg font-bold tracking-tight text-warning">{alertStats.last24Hours}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Sentinels Horizontal List */}
