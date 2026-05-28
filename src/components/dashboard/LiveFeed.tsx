@@ -666,7 +666,7 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
       {renderContent()}
 
       {/* Action Buttons */}
-      {sentinel && (streamUrl || isManualRequested) && !imageError && (
+      {sentinel && (
         <div className="flex gap-2 mt-4">
           <Button 
             variant="outline" 
@@ -679,24 +679,28 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
             {isRestarting ? 'Restarting...' : 'Restart Service'}
           </Button>
 
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex-1 gap-2"
-            onClick={handleStopStream}
-            disabled={isDeactivating}
-          >
-            <Power className="h-4 w-4" />
-            {isDeactivating ? 'Stopping...' : 'Stop Feed'}
-          </Button>
-          <Button 
-            variant="glow" 
-            size="sm" 
-            className="flex-1"
-            onClick={handleFullscreen}
-          >
-            <Maximize className="mr-2 h-4 w-4" /> Full Screen
-          </Button>
+          {(streamUrl || isManualRequested) && !imageError && (
+            <>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex-1 gap-2"
+                onClick={handleStopStream}
+                disabled={isDeactivating}
+              >
+                <Power className="h-4 w-4" />
+                {isDeactivating ? 'Stopping...' : 'Stop Feed'}
+              </Button>
+              <Button 
+                variant="glow" 
+                size="sm" 
+                className="flex-1"
+                onClick={handleFullscreen}
+              >
+                <Maximize className="mr-2 h-4 w-4" /> Full Screen
+              </Button>
+            </>
+          )}
         </div>
       )}
     </div>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { type Sentinel } from "@/services/api";
+import { type Sentinel, sentinelAPI } from "@/services/api";
 import { formatDistanceToNow } from "date-fns";
-import { Battery, Wifi, MapPin, Video, Crosshair } from "lucide-react";
+import { Battery, Wifi, MapPin, Video, Crosshair, RefreshCw } from "lucide-react";
 import { SensorChip, TriggerBadge } from "@/lib/sensorIcons";
+import { toast } from "sonner";
 
 interface Props {
   sentinels: Sentinel[];
@@ -13,6 +14,26 @@ interface Props {
 }
 
 const SentinelsGrid: React.FC<Props> = ({ sentinels, onFocus, onViewStream }) => {
+  const [restartingDevices, setRestartingDevices] = useState<Record<string, boolean>>({});
+
+  const handleRestart = async (deviceId: string) => {
+    try {
+      setRestartingDevices(prev => ({ ...prev, [deviceId]: true }));
+      const res = await sentinelAPI.restartService(deviceId);
+      if (res.success) {
+        toast.success(`Service restart requested successfully for ${deviceId}!`, {
+          description: "The sentinel service will restart in 5 seconds."
+        });
+      } else {
+        toast.error(res.message || `Failed to restart ${deviceId}`);
+      }
+    } catch (err: any) {
+      toast.error(err.message || `Failed to contact sentinel ${deviceId}`);
+    } finally {
+      setRestartingDevices(prev => ({ ...prev, [deviceId]: false }));
+    }
+  };
+
   if (sentinels.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-muted-foreground border border-dashed rounded-xl">
@@ -71,11 +92,11 @@ const SentinelsGrid: React.FC<Props> = ({ sentinels, onFocus, onViewStream }) =>
             )}
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2">
+          <div className="mt-5 grid grid-cols-3 gap-1.5">
             <Button 
               variant="outline" 
               size="sm" 
-              className="w-full gap-1.5 bg-background/50 hover:bg-background" 
+              className="w-full gap-1 px-1 bg-background/50 hover:bg-background text-xs" 
               onClick={() => {
                 if (onFocus) onFocus(s);
                 // Scroll to map smoothly
@@ -84,12 +105,12 @@ const SentinelsGrid: React.FC<Props> = ({ sentinels, onFocus, onViewStream }) =>
                 }, 50);
               }}
             >
-              <Crosshair className="h-4 w-4" />
+              <Crosshair className="h-3.5 w-3.5" />
               Focus
             </Button>
             <Button
               size="sm"
-              className="w-full gap-1.5 bg-primary/90 hover:bg-primary shadow-sm"
+              className="w-full gap-1 px-1 bg-primary/90 hover:bg-primary shadow-sm text-xs"
               onClick={() => {
                 if (onFocus) onFocus(s);
                 if (onViewStream) onViewStream(s);
@@ -99,8 +120,18 @@ const SentinelsGrid: React.FC<Props> = ({ sentinels, onFocus, onViewStream }) =>
                 }, 50);
               }}
             >
-              <Video className="h-4 w-4" />
+              <Video className="h-3.5 w-3.5" />
               Live Feed
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full gap-1 px-1 border-warning/30 hover:border-warning/50 hover:bg-warning/10 text-warning text-xs font-semibold"
+              onClick={() => handleRestart(s.deviceId || s._id)}
+              disabled={restartingDevices[s.deviceId || s._id]}
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${restartingDevices[s.deviceId || s._id] ? 'animate-spin' : ''}`} />
+              Restart
             </Button>
           </div>
         </div>
