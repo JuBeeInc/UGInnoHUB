@@ -43,27 +43,34 @@ class HuaweiOBSService {
     if (this.isConfigured) {
       try {
         // REAL OBS IMPLEMENTATION (when credentials are present):
-        /*
-        import ObsClient from 'esdk-obs-nodejs';
+        const ObsClient = require('esdk-obs-nodejs');
+        const serverUrl = this.config.endPoint.startsWith('http') 
+          ? this.config.endPoint 
+          : `https://${this.config.endPoint}`;
+
         const obsClient = new ObsClient({
           access_key_id: this.config.accessKey,
           secret_access_key: this.config.secretKey,
-          server: this.config.endPoint
+          server: serverUrl
         });
 
         const objectKey = `alerts/${alertId}.jpg`;
-        await obsClient.putObject({
+        console.info(`[HuaweiOBS] Starting real OBS Upload for alert: ${alertId} to bucket: ${this.config.bucketName}`);
+        
+        const result = await obsClient.putObject({
           Bucket: this.config.bucketName,
           Key: objectKey,
           Body: imageBuffer,
           ContentType: 'image/jpeg'
         });
 
-        // Resolve public OBS URL
-        return `https://${this.config.bucketName}.${this.config.endPoint}/${objectKey}`;
-        */
-        console.info(`[HuaweiOBS] Mocking OBS Upload for alert: ${alertId} to bucket: ${this.config.bucketName}`);
-        return `https://${this.config.bucketName}.${this.config.endPoint}/alerts/${alertId}.jpg`;
+        if (result.CommonMsg && result.CommonMsg.Status < 300) {
+          console.info(`[HuaweiOBS] Upload successful for alert: ${alertId}`);
+          // Resolve public OBS URL
+          return `https://${this.config.bucketName}.${this.config.endPoint}/${objectKey}`;
+        } else {
+          throw new Error(`OBS upload rejected with status: ${result.CommonMsg?.Status || 'unknown'}`);
+        }
       } catch (obsError) {
         console.error('[HuaweiOBS] OBS upload failed, falling back to local storage:', obsError);
       }

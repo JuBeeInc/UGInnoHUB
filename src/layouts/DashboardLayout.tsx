@@ -265,7 +265,7 @@ const DashboardLayout = () => {
       {/* Main content */}
       <main 
         className={cn(
-          "flex-1 transition-all duration-300",
+          "flex-1 min-w-0 overflow-x-hidden transition-all duration-300",
           // Mobile: add top padding for header
           "pt-16 lg:pt-0",
           // Desktop: add left margin for sidebar
