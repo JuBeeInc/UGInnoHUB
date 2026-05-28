@@ -406,18 +406,18 @@ const Dashboard = () => {
   const alertingSentinels = sentinels.filter(s => s.status === "alert").length;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Mission Control</h1>
-          <p className="text-muted-foreground">Real-time surveillance network monitoring</p>
+          <h1 className="text-xl md:text-2xl font-bold">Mission Control</h1>
+          <p className="text-muted-foreground text-xs md:text-sm">Real-time surveillance network monitoring</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {error && (
-            <div className="flex items-center gap-2 glass px-4 py-2 rounded-lg border border-warning/50">
-              <WifiOff className="h-4 w-4 text-warning" />
-              <span className="text-sm font-medium text-warning">Offline Mode</span>
+            <div className="flex items-center gap-1.5 glass px-3 py-1.5 rounded-lg border border-warning/50">
+              <WifiOff className="h-3.5 w-3.5 text-warning" />
+              <span className="text-xs font-medium text-warning">Offline Mode</span>
             </div>
           )}
           <Button
@@ -428,14 +428,14 @@ const Dashboard = () => {
               fetchAlertStats();
             }}
             disabled={loading}
-            className="gap-2"
+            className="gap-1.5 h-8 text-xs"
           >
-            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <div className={`flex items-center gap-2 glass px-4 py-2 rounded-lg ${wsConnected ? 'border-primary/50' : 'border-muted'}`}>
-            <div className={`w-2 h-2 rounded-full ${wsConnected ? 'bg-primary animate-pulse' : 'bg-muted-foreground'}`} />
-            <span className="text-sm font-medium">{wsConnected ? 'Live Updates' : 'Polling Mode'}</span>
+          <div className={`flex items-center gap-1.5 glass px-3 py-1.5 rounded-lg h-8 ${wsConnected ? 'border-primary/50' : 'border-muted'}`}>
+            <div className={`w-1.5 h-1.5 rounded-full ${wsConnected ? 'bg-primary animate-pulse' : 'bg-muted-foreground'}`} />
+            <span className="text-xs font-medium">{wsConnected ? 'Live Updates' : 'Polling Mode'}</span>
           </div>
         </div>
       </div>
@@ -480,8 +480,8 @@ const Dashboard = () => {
       </div>
 
       {/* Map & Live Feed */}
-      <div className="grid lg:grid-cols-5 gap-6">
-        <div id="map-container" className="lg:col-span-3 h-[480px]">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div id="map-container" className="lg:col-span-3 h-[320px] sm:h-[400px] lg:h-[480px]">
           <MapComponent 
             sentinels={sentinels}
             selectedSentinel={selectedSentinel}
@@ -500,7 +500,7 @@ const Dashboard = () => {
           />
         </div>
 
-        <div id="feed-container" className="lg:col-span-2 h-[480px] overflow-y-auto pr-1">
+        <div id="feed-container" className="lg:col-span-2 h-auto lg:h-[480px] overflow-y-auto pr-1">
           {multiFeedMode ? (
             <div className={`grid gap-4 ${activeFeeds.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} ${activeFeeds.length <= 2 ? 'h-full' : 'h-auto pb-4'}`}>
               {activeFeeds.length === 0 ? (
