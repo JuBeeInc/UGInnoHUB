@@ -374,7 +374,8 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
         if (!mounted) return;
         if (latest) {
           const ageMs = Date.now() - new Date(latest.timestamp).getTime();
-          const active = ageMs < 2 * 60 * 1000;
+          const isVisionAI = latest.triggerType === 'ai';
+          const active = ageMs < 2 * 60 * 1000 && isVisionAI;
           setShowThreatOverlay(active);
           setLatestAlertId(active ? latest._id : null);
         } else {
