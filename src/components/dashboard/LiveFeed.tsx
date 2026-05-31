@@ -452,7 +452,7 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
     // Case 1: No sentinel selected
     if (!sentinel) {
       return (
-        <div className="flex-1 min-h-0 bg-background rounded-lg relative overflow-hidden flex flex-col items-center justify-center border border-border/50">
+        <div className="flex-1 aspect-video lg:aspect-auto w-full min-h-[260px] lg:min-h-0 bg-background rounded-lg relative overflow-hidden flex flex-col items-center justify-center border border-border/50">
           <div className="absolute inset-0 bg-gradient-to-br from-secondary/30 to-background" />
           <div className="relative z-10 text-center space-y-4 px-6">
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
@@ -526,7 +526,7 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
     // show the large active stream container (loading state) instead of the small card.
     if (imageError || (!streamUrl && !isManualRequested)) {
       return (
-        <div className="flex-1 min-h-0 bg-background rounded-lg relative overflow-hidden border border-destructive/30">
+        <div className="flex-1 aspect-video lg:aspect-auto w-full min-h-[200px] lg:min-h-0 bg-background rounded-lg relative overflow-hidden border border-destructive/30">
           {/* subtle background to avoid full-screen takeover */}
           <div className="absolute inset-0 bg-background/60" />
 
@@ -568,7 +568,7 @@ const LiveFeed = ({ sentinel, onClose, onStreamStateChange, externalManualReques
 
     // Case 4: Active stream (active or alert status)
     return (
-      <div ref={containerRef} className="video-stream-container flex-1 min-h-0 bg-background rounded-lg relative overflow-hidden flex items-center justify-center border border-primary/30">
+      <div ref={containerRef} className="video-stream-container flex-1 aspect-video lg:aspect-auto w-full min-h-[240px] md:min-h-[320px] lg:min-h-0 bg-background rounded-lg relative overflow-hidden flex items-center justify-center border border-primary/30">
         {/* Loading state */}
         {!imageLoaded && (
           <div className="absolute inset-0 bg-gradient-to-br from-secondary/50 to-background flex items-center justify-center z-10">
