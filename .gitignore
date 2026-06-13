@@ -26,6 +26,4 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
-
-terra-sentry-2.0
+*.sw?

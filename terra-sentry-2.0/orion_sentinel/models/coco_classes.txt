@@ -1,0 +1,6 @@
+excavator
+bus
+car
+motorcycle
+truck
+person
